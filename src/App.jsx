@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import todo from './assets/todo_icon.png'
 import Parents from './Components/Parents'
 import Students from './Components/Students'
@@ -10,6 +10,23 @@ export default function App() {
   const [editingParent, setEditingParent] = useState(null);
   const [parents, setParents] = useState([]);
   const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    const storedParents = JSON.parse(localStorage.getItem("parents")) || [];
+    const storedStudents = JSON.parse(localStorage.getItem("students")) || [];
+    setParents(storedParents);
+    setStudents(storedStudents);
+  }, []);
+
+  // ✅ Save to localStorage whenever parents change
+  useEffect(() => {
+    localStorage.setItem("parents", JSON.stringify(parents));
+  }, [parents]);
+
+  // ✅ Save to localStorage whenever students change
+  useEffect(() => {
+    localStorage.setItem("students", JSON.stringify(students));
+  }, [students]);
 
   // jab Parents form submit hoga, ye function chalega
   const handleAddParent = (parentData) => {
